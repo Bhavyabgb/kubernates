@@ -16,9 +16,9 @@ If swap is enabled, kubeadm will fail preflight checks.
 ----------------------------------------------------
 sudo swapoff -a
 
-----------------------------------------------------
+-----------------------------------------------------------------------------------------------
 Step 2: Install Docker (Container Runtime) - Docker will be used as the container runtime for Kubernetes.
-----------------------------------------------------
+------------------------------------------------------------------------------------------------
 sudo apt-get update -y
 sudo apt-get install -y docker.io
 
@@ -28,6 +28,24 @@ sudo systemctl enable docker
 sudo systemctl start docker
 sudo systemctl status docker
 
+---------------------------------------------------------------------------------------------
+Step - Important : Configure Docker to use systemd cgroups
+(Required for Kubernetes stability)
+--------------------------------------------------------------------------------------------
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
+sudo systemctl daemon-reexec
+sudo systemctl restart docker
 -----------------------------------------------------------------------------------------------------------------
 Step 3: Install cri-dockerd (Docker CRI Adapter) - Kubernetes no longer supports Docker directly.
 cri-dockerd acts as a bridge between Kubernetes and Docker.
@@ -142,7 +160,24 @@ sudo apt-get update -y
 sudo apt-get install -y docker.io
 sudo systemctl enable docker
 sudo systemctl start docker
+------------------------------------------------------------------------------------------------
+Step - Important : Configure Docker to use systemd cgroups
+(Required for Kubernetes stability)
+--------------------------------------------------------------------------------------------------
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
 
+sudo systemctl daemon-reexec
+sudo systemctl restart docker
 -----------------------------------------------------------------------------------------------------------------
 Step 3: Install cri-dockerd (Worker) - Required to allow Kubernetes to communicate with Docker.
 -----------------------------------------------------------------------------------------------------------------
