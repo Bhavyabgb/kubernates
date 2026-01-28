@@ -2,39 +2,42 @@ Create instance:
 	attach IAM role to that instance(admin full prev role has to be created in IAM Role)
 	
 
-EKSCTL:	
-
+1.EKSCTL:	
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-
-
 	sudo mv /tmp/eksctl /usr/local/bin 
-
 	eksctl version
 
-	KUBECTL:
-
+2.KUBECTL:
    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
+   Make it executable:
    chmod +x kubectl
 
+Move to user binary directory:
    mkdir -p ~/.local/bin
-
    mv ./kubectl ~/.local/bin/kubectl
 
+ADD kubectl TO PATH (IMPORTANT)
+   echo 'export PATH=$PATH:$HOME/.local/bin' >> ~/.bashrc
+   source ~/.bashrc
+
+VERIFY kubectl INSTALLATION
   kubectl version
 
-	AWS-CLI:
+3.AWS-CLI:
 
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-
   unzip awscliv2.zip
-
   sudo ./aws/install
 
   aws --version
 
+4.Create the Cluster
+
   eksctl create cluster --name my-eks-cluster --nodegroup-name my-worker-node --node-type t2.micro --nodes 3 --managed --region us-west-2
 
+5.Delete The cluster
+  eksctl delete cluster --name my-eks-cluster --region us-east-1
 ============================================================================================================================================================================================================================
 
 eksctl create cluster -f cluster.yaml
