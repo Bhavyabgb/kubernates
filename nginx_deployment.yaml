@@ -49,6 +49,7 @@ spec:
   selector:
     matchLabels:
       app: nginx
+  minReadySeconds: 10    #A newly created Pod must stay in Ready state for at least 10 seconds before Kubernetes considers it Available.
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -210,5 +211,6 @@ selector:
 1 canary
 ~20% traffic to new version
 It is simple round-robin / random distribution.
+
 
 
