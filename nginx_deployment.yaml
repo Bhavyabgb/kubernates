@@ -83,6 +83,22 @@ spec:
     targetPort: 80
     nodePort: 30007   # Optional (auto-assign if removed)
 
+🔵 LoadBalancer Service (AWS EKS)
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    app: nginx
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+  - port: 80          # External LB listens on 80
+    targetPort: 80    # Forwards to container port 80
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 1️⃣ RECREATE Strategy
 
@@ -265,6 +281,7 @@ spec:
 1 canary
 ~20% traffic to new version
 It is simple round-robin / random distribution.
+
 
 
 
