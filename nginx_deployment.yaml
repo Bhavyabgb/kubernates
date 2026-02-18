@@ -126,7 +126,7 @@ spec:
  3️⃣ BLUE-GREEN Deployment
 
  🟦 Blue (Current Version)
- apiVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-blue
@@ -254,6 +254,7 @@ selector:
 1 canary
 ~20% traffic to new version
 It is simple round-robin / random distribution.
+
 
 
 
