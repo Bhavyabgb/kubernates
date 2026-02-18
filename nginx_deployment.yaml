@@ -103,7 +103,7 @@ spec:
     app: nginx
   ports:
   - port: 80     # The Service will listen on port 80.  # Service is a virtual load balancer inside the cluster.
-    targetPort: 80
+    targetPort: 80    # iptables (created by kube-proxy) forwards to: PodIP:targetPort
     nodePort: 30007   # You can change or remove this to auto-assign
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -226,6 +226,7 @@ selector:
 1 canary
 ~20% traffic to new version
 It is simple round-robin / random distribution.
+
 
 
 
